@@ -23,11 +23,12 @@ export default function OAuth() {
         body: JSON.stringify({
           name: resultFromGoogle.user.displayName,
           email: resultFromGoogle.user.email,
-          googlePhotoURL: resultFromGoogle.user.photoURL,
+          googlePhotoUrl: resultFromGoogle.user.photoURL,
         }),
       });
-      console.log(res);
+      // console.log(res);
       const data = await res.json();
+
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
