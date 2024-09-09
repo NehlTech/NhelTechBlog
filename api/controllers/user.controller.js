@@ -21,15 +21,24 @@ export const updateUser = async (req, res, next) => {
     const updateFields = {};
 
     // Validate and handle password
-    if (password) {
-      validatePassword(password);
-      updateFields.password = bcryptjs.hashSync(password, 10);
+    try {
+      if (password) {
+        validatePassword(password);
+        updateFields.password = bcryptjs.hashSync(password, 10);
+      }
+    } catch (error) {
+      console.error(error.message);
     }
 
     // Validate and handle username
     if (username) {
-      validateUsername(username);
-      updateFields.username = username;
+      try {
+        validateUsername(username);
+        updateFields.username = username;
+      } catch (error) {
+        // return next(errorHandler(400, error.message));
+        console.error(error.mesage);
+      }
     }
 
     // Handle optional fields
