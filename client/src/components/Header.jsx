@@ -15,30 +15,32 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
-import { signOutSuccess } from "../redux/user/userSlice";
+// import { signOutSuccess } from "../redux/user/userSlice";
+import { handleSignOut } from "../../../api/utils/handleSignOut.js";
 
 export default function Header() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
   const { theme } = useSelector((state) => state.theme);
+  const signOut = handleSignOut(dispatch);
 
   //handle signOut function
-  const handleSignOut = async () => {
-    try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signOutSuccess());
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const handleSignOut = async () => {
+  //   try {
+  //     const res = await fetch("/api/user/signout", {
+  //       method: "POST",
+  //     });
+  //     const data = await res.json();
+  //     if (!res.ok) {
+  //       console.log(data.message);
+  //     } else {
+  //       dispatch(signOutSuccess());
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   return (
     <Navbar className="border-b-2">
@@ -80,7 +82,7 @@ export default function Header() {
             }
           >
             <DropdownHeader>
-              <span className="block text-sm">@{currentUser.username}</span>
+              <span className="block text-sm">{currentUser.username}</span>
               <span className="block text-sm font-medium truncate">
                 {currentUser.email}
               </span>
@@ -95,7 +97,7 @@ export default function Header() {
               <DropdownItem>Profile</DropdownItem>
             </Link>
             <DropdownDivider />
-            <DropdownItem onClick={handleSignOut}>Sign Out</DropdownItem>
+            <DropdownItem onClick={signOut}>Sign Out</DropdownItem>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
