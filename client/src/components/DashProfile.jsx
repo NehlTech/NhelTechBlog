@@ -24,16 +24,16 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
-  signOutSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { validateUsername } from "../../../api/utils/validateUsername";
 import { validatePassword } from "../../../api/utils/validatePassword";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { handleSignOut } from "../../../api/utils/handleSignOut";
+import { Link } from "react-router-dom";
 
 export default function DashProfile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
@@ -269,9 +269,26 @@ export default function DashProfile() {
           placeholder="Password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button
+          type="submit"
+          gradientDuoTone="purpleToBlue"
+          outline
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Loading..." : "Update"}
         </Button>
+        {/* if user is admin then create post button  */}
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              className="w-full"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
 
       <div className="flex text-red-500 mt-5 justify-between">
