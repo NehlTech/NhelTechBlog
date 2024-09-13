@@ -95,7 +95,15 @@ export default function CreatePost() {
               setFormData({ ...formData, title: e.target.value })
             }
           />
-          <Select onChange={(e) => setFormData({ category: e.target.value })}>
+          <Select
+            onChange={(e) =>
+              setFormData({
+                category:
+                  e.target.value.charAt(0).toUpperCase() +
+                  e.target.value.slice(1),
+              })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             <option value="mathematics">Mathematics</option>
             <option value="english">English</option>
