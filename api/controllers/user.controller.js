@@ -84,3 +84,39 @@ export const signOut = (req, res, next) => {
     next(error);
   }
 };
+
+// Main function to handle getUsers
+export const getUsers = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    return next(errorHandler(403, "You are not allowed to see all users"));
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+    const users = await User.find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+    const totalUsers = await User.countDocuments();
+    const oneMonthAgo = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() - 1,
+      new Date().getDate()
+    );
+
+    const lastMonthUsers = await User.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+    res
+      .status(200)
+      .json({ users: usersWithoutPassword, totalUsers, lastMonthUsers });
+  } catch (error) {
+    next(error);
+  }
+};

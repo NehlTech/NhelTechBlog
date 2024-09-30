@@ -21,12 +21,14 @@ export default function DashPosts() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   // console.log(userPosts);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
@@ -44,11 +46,17 @@ export default function DashPosts() {
   }, [currentUser._id]);
 
   const handleShowMore = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     const startIndex = userPosts.length;
     try {
       const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/post/getposts?userId=${encodeURIComponent(
+          currentUser._id
+        )}&startIndex=${startIndex}`
       );
+
       const data = await res.json();
       if (res.ok) {
         setUserPosts((prev) => [...prev, ...data.posts]);
@@ -58,6 +66,8 @@ export default function DashPosts() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,9 +162,10 @@ export default function DashPosts() {
           {showMore && (
             <button
               onClick={handleShowMore}
+              disabled={isLoading}
               className="w-full text-teal-500 self-center text-sm py-7"
             >
-              Show more
+              {isLoading ? "Loading..." : " Show more"}
             </button>
           )}
         </>
