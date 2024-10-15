@@ -111,7 +111,7 @@ export default function DashPosts() {
               </TableHeadCell>
             </TableHead>
             {userPosts.map((post) => (
-              <TableBody className="divide-y">
+              <TableBody className="divide-y" key={post._id}>
                 <TableRow className="bg-white dark:bg-gray-800 dark:border-gray-700">
                   <TableCell>
                     {new Date(post.updatedAt)

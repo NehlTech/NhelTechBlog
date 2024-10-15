@@ -107,7 +107,7 @@ export default function SignIn() {
             </Button>
             <OAuth />
           </form>
-          {/* For end  */}
+          {/* Form end  */}
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't Have an account?</span>
             <Link to="/sign-up" className="text-blue-500">
