@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Button, Spinner } from "flowbite-react";
+import { CallToAction } from "../components/CallToAction";
 
 function PostPage() {
   const { postSlug } = useParams();
@@ -74,6 +75,9 @@ function PostPage() {
         ) : (
           <p>No content available</p>
         )}
+      </div>
+      <div className="max-w-4xl mx-auto w-full">
+        <CallToAction />
       </div>
     </main>
   );
