@@ -27,7 +27,7 @@ export const CallToAction = () => {
         </Button>
       </div>
       {/* image in the right side  */}
-      <div className="p-7 flex-1">
+      <div className="p-7 flex-1 justify-center">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB5QKjgOfsW4IP75ECdZ8X-HVN7kCdJqPbVw&s" />
       </div>
     </div>
